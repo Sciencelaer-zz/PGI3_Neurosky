@@ -8,16 +8,20 @@ public class MovePlayer : MonoBehaviour
 	public GameObject hexbot; 
 	private bool saved = false;
 
+
+	// Variables for handling movements
 	[HideInInspector]
 	public bool facingRight = true;			// For determining which way the player is currently facing.
-	[HideInInspector]
-	public bool jump = false;				// Condition for whether the player should jump.
-	private int jumpCount = 0;
-	
 	public float moveForce = 365f;			// Amount of force added to move the player left and right.
 	public float maxSpeed = 5f;				// The fastest the player can travel in the x axis.
 	public float speed= 3.0f;
-	public float jumpForce = 500f;			// Amount of force added when the player jumps.
+
+	// Variables for handling jumping
+	[HideInInspector]
+	public bool jump = false;				// Condition for whether the player should jump.
+	private int jumpCount = 0;
+	public float jumpForce_one = 500f;			// Amount of force added when the player jumps.
+	public float jumpForce_two = 250f;
 	private bool grounded = true;			// Whether or not the player is grounded.
 	//public GUIText successText;
 
@@ -115,14 +119,27 @@ public class MovePlayer : MonoBehaviour
 	
 
 		// If the player should jump...
-		if(jump)
-		{
-			// Add a vertical force to the player.
-			rigidbody2D.AddForce(new Vector2(0f, jumpForce));
+		if (jump) {
+			Debug.Log("jump requested");
+
+						if (jumpCount == 0) {
+								// Add a vertical force to the player.
+								rigidbody2D.AddForce (new Vector2 (0f, jumpForce_one));
 			
-			// Make sure the player can't jump again until the jump conditions from Update are satisfied.
-			jumpCount++;
-			jump = false;
+								// Make sure the player can't jump again until the jump conditions from Update are satisfied.
+								jumpCount++;
+								jump = false;
+
+						} else if (jumpCount == 1){
+
+
+						rigidbody2D.AddForce (new Vector2 (0f, jumpForce_two));
+			
+						// Make sure the player can't jump again until the jump conditions from Update are satisfied.
+						jumpCount++;
+						jump = false;
+
+				}
 		}
 	}
 
@@ -130,17 +147,19 @@ public class MovePlayer : MonoBehaviour
 	void OnCollisionEnter2D(Collision2D collision2d)
 	{
 		if (collision2d.gameObject.tag == "Ground") {
+						
 						grounded = true;
-			jumpCount = 0;
+						jumpCount = 0;
 						// check message upon collition for functionality working of code.
 						Debug.Log ("I am colliding with the ground");
 
-				} else {
+				} else if (collision2d.gameObject.tag == "Wall") {
 
-			grounded = false; 
-			jumpCount = 2;
-			Debug.Log ("I am colliding with a wall");
+					grounded = false; 
+					jumpCount = 2;
+					Debug.Log ("I am colliding with a wall");
 				}
+
 	}
 	
 
