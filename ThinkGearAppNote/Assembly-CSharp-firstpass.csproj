@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Plugins\MovePlayer.cs" />
      <Compile Include="Assets\Plugins\ThinkGear.cs" />
      <Compile Include="Assets\Plugins\ThinkGearController.cs" />
  <Reference Include="UnityEngine.UI">

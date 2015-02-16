@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{CFAC90FA-A647-6E34-40FC-06F81F565A17}") = "ThinkGearAppNote", "Assembly-CSharp-firstpass.csproj", "{5C45CC9F-F5FA-8F9C-6A4B-A8007A1C466E}"
 EndProject
-Project("{CFAC90FA-A647-6E34-40FC-06F81F565A17}") = "ThinkGearAppNote", "Assembly-CSharp.csproj", "{5DC35C17-F7EA-DBB4-CA9B-03BEA9EF3193}"
-EndProject
 Project("{CFAC90FA-A647-6E34-40FC-06F81F565A17}") = "ThinkGearAppNote", "Assembly-UnityScript.unityproj", "{32017EA6-2496-C9E4-73CE-CBCB905EFF0C}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{5C45CC9F-F5FA-8F9C-6A4B-A8007A1C466E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C45CC9F-F5FA-8F9C-6A4B-A8007A1C466E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C45CC9F-F5FA-8F9C-6A4B-A8007A1C466E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DC35C17-F7EA-DBB4-CA9B-03BEA9EF3193}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DC35C17-F7EA-DBB4-CA9B-03BEA9EF3193}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DC35C17-F7EA-DBB4-CA9B-03BEA9EF3193}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DC35C17-F7EA-DBB4-CA9B-03BEA9EF3193}.Release|Any CPU.Build.0 = Release|Any CPU
 		{32017EA6-2496-C9E4-73CE-CBCB905EFF0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{32017EA6-2496-C9E4-73CE-CBCB905EFF0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32017EA6-2496-C9E4-73CE-CBCB905EFF0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,7 +23,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-						GlobalSection(MonoDevelopProperties) = preSolution
+											GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1
