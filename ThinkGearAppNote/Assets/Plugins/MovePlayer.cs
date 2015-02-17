@@ -3,6 +3,11 @@ using System.Collections;
 
 public class MovePlayer : MonoBehaviour
 {
+	enum AppState {
+		Disconnected = 0,
+		Connecting,
+		Connected
+	}
 
 	public GameObject player;
 	public GameObject hexbot; 
@@ -26,23 +31,36 @@ public class MovePlayer : MonoBehaviour
 	//public GUIText successText;
 	
 	// Code for handling the NEUROSKY headset. Find more info on the Neurosky website
-	private int handleID = -1;
-	private int baudRate = ThinkGear.BAUD_9600;
-	private int packetType = ThinkGear.STREAM_PACKETS;
+	//private int handleID = -1;
+	//private int baudRate = ThinkGear.BAUD_9600;
+	//private int packetType = ThinkGear.STREAM_PACKETS;
+	private Hashtable headsetValues; 
+	private AppState state = AppState.Disconnected;
+	private bool actualData = false;
+	private float meditation = 0;
 
-	private float GetDataValue(int valueType){
-		return ThinkGear.TG_GetValue(handleID, valueType);
+
+	//Listening for Data...whatever that means
+	void OnHeadsetDataReceived(Hashtable values){
+		headsetValues = values;
+		actualData = true;
 	}
+
+	void OnHeadsetConnected(){
+		state = AppState.Connected;
+	}
+
+
+	//My Actual Game Code
 
 	void Update()
 	{
-				
-				Debug.Log ();
-			
-				// The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
-				//grounded = Physics2D.Linecast (transform.position, groundCheck.position, 1 << LayerMask.NameToLayer ("Ground"));  
-		
-				// If the jump button is pressed and the player is grounded then the player should jump.
+		if (state == AppState.Connected && actualData) {
+
+			meditation = (float)headsetValues["meditation"];
+			//Debug.Log (headsetValues["meditation"]);		
+		}
+		// If the jump button is pressed and the player is grounded then the player should jump.
 				if (Input.GetButtonDown ("Jump") && grounded && jumpCount <2) {
 						jump = true; 
 
@@ -161,7 +179,7 @@ public class MovePlayer : MonoBehaviour
 			//successText.text = "You Escaped the First Level!";
 		}
 
-		if (other.gameObject.tag == "followMe") {
+		if (other.gameObject.tag == "followMe" && meditation > 50) {
 			Debug.Log ("You picked up the robot!");
 			
 			other.gameObject.SetActive(false);
