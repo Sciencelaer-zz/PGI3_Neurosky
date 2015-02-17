@@ -19,8 +19,9 @@ function OnGUI(){
   switch(state){
     case AppState.Disconnected:
       // display UI for the user to enter in the port name and connect
-      GUILayout.Label("Port name:");                       
-      portName = GUILayout.TextField(portName, GUILayout.Width(150));
+      //GUILayout.Label("Port name:");                       
+      portName = '\\\\.\\COM10';//GUILayout.TextField(portName, GUILayout.Width(150));
+      //Debug.Log(portName);
      
       if(GUILayout.Button("Connect")){
         state = AppState.Connecting;
