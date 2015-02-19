@@ -114,7 +114,7 @@ public class ThinkGearController: MonoBehaviour {
     Hashtable values = new Hashtable();
 
     if(packetCount > 0){
-      values.Add("poorSignal", GetDataValue(ThinkGear.DATA_POOR_SIGNAL));  
+      values.Add("poor signal", GetDataValue(ThinkGear.DATA_POOR_SIGNAL));  
       values.Add("attention", GetDataValue(ThinkGear.DATA_ATTENTION));
       values.Add("meditation", GetDataValue(ThinkGear.DATA_MEDITATION));
       values.Add("delta", GetDataValue(ThinkGear.DATA_DELTA));
@@ -142,4 +142,6 @@ public class ThinkGearController: MonoBehaviour {
   private float GetDataValue(int valueType){
     return ThinkGear.TG_GetValue(handleID, valueType);
   }
+
+
 }

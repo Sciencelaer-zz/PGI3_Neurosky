@@ -11,7 +11,10 @@ public class MovePlayer : MonoBehaviour
 
 	public GameObject player;
 	public GameObject hexbot; 
+	public Animator powerup;
 	private bool saved = false;
+	private bool reachedRobot = false;
+	private bool isCalm = false;
 
 
 	// Variables for handling movements
@@ -39,8 +42,12 @@ public class MovePlayer : MonoBehaviour
 	private bool actualData = false;
 	private float meditation = 0;
 
+	//Handling the game GUI
+	//private Rect windowRect = new Rect (20, 20, 1000, 500);
+	public bool endTrue = false;
+	//private bool paused = false;
 
-	//Listening for Data...whatever that means
+	//Listening for Data...whatever that means  (this is just ported from the ThinkGearGui js code)
 	void OnHeadsetDataReceived(Hashtable values){
 		headsetValues = values;
 		actualData = true;
@@ -51,10 +58,16 @@ public class MovePlayer : MonoBehaviour
 	}
 
 
+
 	//My Actual Game Code
 
 	void Update()
 	{
+
+		ControlAnimation ();
+		isRobotCalm ();
+		isRobotFollowing ();
+
 		if (state == AppState.Connected && actualData) {
 
 			meditation = (float)headsetValues["meditation"];
@@ -172,23 +185,60 @@ public class MovePlayer : MonoBehaviour
 
 	void OnTriggerEnter2D(Collider2D other){
 		//Destroy (other.gameObject);
-		
-		if (other.gameObject.tag == "powerUp") {
-			Debug.Log ("You reached the level end");
-			other.gameObject.SetActive(false);
+		Debug.Log ("you are standing in the follow spot");
+
+		if (other.gameObject.tag == "PowerUp") {
+
+			if (saved){
+				endTrue = true;
+				other.gameObject.SetActive(false);
+
+			}
 			//successText.text = "You Escaped the First Level!";
 		}
 
-		if (other.gameObject.tag == "followMe" && meditation > 50) {
-			Debug.Log ("You picked up the robot!");
-			
-			other.gameObject.SetActive(false);
+		if (other.gameObject.tag == "followMe") {
 
-			saved=true;
+			//Debug.Log ("You picked up the robot!");
+			
+			//other.gameObject.SetActive(false);
+
+			reachedRobot = true;
 			//successText.text = "You Escaped the First Level!";
 		}
 		
 	}
+
+
+	void isRobotCalm(){
+		if (meditation > 10) {
+						isCalm = true;
+				} else {
+						isCalm = false;
+
+				}
+		}
+
+	void isRobotFollowing(){
+		if (isCalm && reachedRobot) {
+
+						saved = true;
+				} else {
+						saved = false;
+				}
+
+		}
+
+	void ControlAnimation(){
+
+		if (meditation > 10) {
+						powerup.speed = 0;
+
+				} else {
+						powerup.speed = (100F - meditation) * 0.05F;//meditation;
+				}
+
+		}
 
 
 	
