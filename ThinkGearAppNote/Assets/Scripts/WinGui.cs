@@ -11,12 +11,18 @@ public class WinGui : MonoBehaviour {
 	public Rect windowRect = new Rect (20, 20, 1000, 500);
 	private bool paused = false;
 
+	public GameObject tg_script;
+	public ThinkGearController tg_headset;
+
 
 	// Use this for initialization
 	void Update () {
 		p = GameObject.Find ("Player");
 		mp = p.GetComponent <MovePlayer> ();
 		winstate = mp.endTrue;
+
+		tg_script = GameObject.Find ("ThinkGear");
+		tg_headset = tg_script.GetComponent <ThinkGearController> ();
 	}
 
 
@@ -24,8 +30,7 @@ public class WinGui : MonoBehaviour {
 		
 		
 		if (winstate) {
-			doPause();
-			windowRect = GUI.Window (0, windowRect, DoSuccessWindow, "Congradulations! You saved the robot!");
+			windowRect = GUI.Window (0, windowRect, DoSuccessWindow, "Congratulations! You saved the robot!");
 			//GUI.Label(new Rect (20, 20, 500, 80), "You Saved the Robot");
 		}
 		
@@ -37,15 +42,19 @@ public class WinGui : MonoBehaviour {
 		
 	}
 	void restart(){
+		tg_headset.SendMessage("OnHeadsetDisconnectionRequest");
+
 		Application.LoadLevel("Pixelles_MostRecent");
 		
 	}
 	
 	void quit(){
+		tg_headset.SendMessage("OnHeadsetDisconnectionRequest");
+		//yield return new WaitForSeconds(5);
 		Application.LoadLevel("MainMenu");
 		
 	}
-	
+
 	void DoSuccessWindow(int ID){
 		
 		if (GUI.Button (new Rect (70, 50, 100, 20), "Restart")) {

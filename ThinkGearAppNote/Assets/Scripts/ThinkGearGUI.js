@@ -4,8 +4,10 @@ enum AppState {
   Connected
 }
 
+	
 var portName : String;
 var signalIcons: Texture2D[]; 
+var connect: KeyCode;
 
 private var showErrorWindow : boolean = false;
 private var showConnectedWindow : boolean = false;
@@ -15,7 +17,6 @@ private var headsetValues : Hashtable;
 private var windowRect : Rect = new Rect(100, 100, 150, 100);
 private var indexSignalIcons: int = 1;
 
-
 function OnGUI(){
   GUILayout.BeginHorizontal();
 
@@ -24,11 +25,11 @@ function OnGUI(){
       // display UI for the user to enter in the port name and connect
       //GUILayout.Label("Port name:");                       
       portName = '\\\\.\\COM10'; //GUILayout.TextField(portName, GUILayout.Width(150));
-     
-      if(GUILayout.Button("Connect")){
-        state = AppState.Connecting;
-        SendMessage("OnHeadsetConnectionRequest", portName);
-      }
+    
+      if (Input.GetKey(KeyCode.F1)){
+      state = AppState.Connecting;
+      SendMessage("OnHeadsetConnectionRequest", portName);
+  		}
 
       break;
 
@@ -38,9 +39,10 @@ function OnGUI(){
       
     case AppState.Connected:
       // display UI to allow a user to disconnect
+      state = AppState.Connected;
       GUILayout.Label("Connected");
 
-      if(GUILayout.Button("Disconnect"))
+      if(Input.GetKey(KeyCode.F2))
         SendMessage("OnHeadsetDisconnectionRequest");
 
       break;
@@ -106,8 +108,9 @@ function OnGUI(){
 	}*/
 	
 function OnHeadsetConnected(){
-  showConnectedWindow = true;
+  //showConnectedWindow = true;
   state = AppState.Connected;
+  disconnect = true;
 }
 
 function OnHeadsetConnectionError(){
@@ -116,7 +119,7 @@ function OnHeadsetConnectionError(){
 }
 
 function OnHeadsetDisconnected(){
-  showDisconnectedWindow = true;
+  //showDisconnectedWindow = true;
   state = AppState.Disconnected;
 }
 
