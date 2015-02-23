@@ -6,8 +6,13 @@ enum AppState {
 
 	
 var portName : String;
-var signalIcons: Texture2D[]; 
+//var signalIcons: Texture2D[]; 
 var connect: KeyCode;
+var goodQuality : GameObject;
+var medQuality : GameObject;
+var badQuality : GameObject;
+var goodQualityText : GameObject;
+var badQualityText : GameObject;
 
 private var showErrorWindow : boolean = false;
 private var showConnectedWindow : boolean = false;
@@ -15,7 +20,18 @@ private var showDisconnectedWindow : boolean = false;
 private var state : AppState = AppState.Disconnected;
 private var headsetValues : Hashtable;
 private var windowRect : Rect = new Rect(100, 100, 150, 100);
-private var indexSignalIcons: int = 1;
+
+
+
+
+function Start(){
+
+	goodQuality.SetActive(false);
+	medQuality.SetActive(false);
+	badQuality.SetActive(false);
+	goodQualityText.SetActive(false);
+	badQualityText.SetActive(false);
+}
 
 function OnGUI(){
   GUILayout.BeginHorizontal();
@@ -56,20 +72,33 @@ function OnGUI(){
  
   var value : float = headsetValues["poor signal"];
   
-  if(value < 25){
-      		indexSignalIcons = 0;
-		}else if(value >= 25 && value < 51){
-      		indexSignalIcons = 4;
-		}else if(value >= 51 && value < 78){
-      		indexSignalIcons = 3;
-		}else if(value >= 78 && value < 107){
-      		indexSignalIcons = 2;
+  if(value < 51){
+      		goodQuality.SetActive(true);
+      		medQuality.SetActive(false);
+      		badQuality.SetActive(false);
+      		
+      		goodQualityText.SetActive(true);
+			badQualityText.SetActive(false);
+			
+		}else if(value >= 51 && value < 107){
+      		goodQuality.SetActive(false);
+      		medQuality.SetActive(true);
+      		badQuality.SetActive(false);
+      		
+      		goodQualityText.SetActive(false);
+			badQualityText.SetActive(true);    
+			  		
 		}else if(value >= 107){
-      		indexSignalIcons = 1;
+		    goodQuality.SetActive(false);
+      		medQuality.SetActive(false);
+      		badQuality.SetActive(true); 
+
+      		goodQualityText.SetActive(false);
+			badQualityText.SetActive(true);  		
 		}
 		
 	
-  GUILayout.Label(signalIcons[indexSignalIcons]);
+  //GUILayout.Label(signalIcons[indexSignalIcons]);
     /*for(var key : String in headsetValues.Keys){
       var value : float = headsetValues[key];
       GUILayout.Label(key + ": " + value);
@@ -141,7 +170,7 @@ function OnApplicationQuit(){
 function ErrorWindow(){
   GUILayout.Label("There was a connection error.");
   
-  if(GUILayout.Button("Close"))
+  if(Input.GetKey(KeyCode.KeypadEnter))
     showErrorWindow = false;
 }
 

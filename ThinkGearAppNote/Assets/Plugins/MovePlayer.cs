@@ -8,6 +8,7 @@ public class MovePlayer : MonoBehaviour
 		Connecting,
 		Connected
 	}
+	
 
 	public GameObject player;
 	public GameObject hexbot; 
@@ -15,6 +16,7 @@ public class MovePlayer : MonoBehaviour
 	private bool saved = false;
 	private bool reachedRobot = false;
 	private bool isCalm = false;
+	public int calmThreshold;
 
 
 	// Variables for handling movements
@@ -45,6 +47,8 @@ public class MovePlayer : MonoBehaviour
 	//Handling the game GUI
 	//private Rect windowRect = new Rect (20, 20, 1000, 500);
 	public bool endTrue = false;
+	public GameObject exitSign;
+	//public AudioSource robotSounds; 
 	//private bool paused = false;
 
 	//Listening for Data...whatever that means  (this is just ported from the ThinkGearGui js code)
@@ -57,9 +61,11 @@ public class MovePlayer : MonoBehaviour
 		state = AppState.Connected;
 	}
 
-
-
 	//My Actual Game Code
+	void Awake(){
+
+		exitSign.SetActive (false);
+	}
 
 	void Update()
 	{
@@ -186,12 +192,17 @@ public class MovePlayer : MonoBehaviour
 	void OnTriggerEnter2D(Collider2D other){
 		//Destroy (other.gameObject);
 		Debug.Log ("you are standing in the follow spot");
+		if (other.gameObject.tag == "SceneryIndicators") {
+			//other.gameObject.SetActive(false);
+			Destroy(other.gameObject);
+		}
 
 		if (other.gameObject.tag == "PowerUp") {
 
 			if (saved){
 				endTrue = true;
 				other.gameObject.SetActive(false);
+
 
 			}
 			//successText.text = "You Escaped the First Level!";
@@ -204,6 +215,8 @@ public class MovePlayer : MonoBehaviour
 			//other.gameObject.SetActive(false);
 
 			reachedRobot = true;
+			exitSign.SetActive (true);
+
 			//successText.text = "You Escaped the First Level!";
 		}
 		
@@ -211,7 +224,7 @@ public class MovePlayer : MonoBehaviour
 
 
 	void isRobotCalm(){
-		if (meditation > 10) {
+		if (meditation > calmThreshold) {
 						isCalm = true;
 				} else {
 						isCalm = false;
@@ -223,7 +236,8 @@ public class MovePlayer : MonoBehaviour
 		if (isCalm && reachedRobot) {
 
 						saved = true;
-				} else {
+				} 
+				else {
 						saved = false;
 				}
 
@@ -231,11 +245,19 @@ public class MovePlayer : MonoBehaviour
 
 	void ControlAnimation(){
 
-		if (meditation > 10) {
+		Debug.Log(hexbot.audio.volume);
+		if (meditation > calmThreshold) {
+
 						powerup.speed = 0;
+						hexbot.audio.volume = 0.01F;
+						
 
 				} else {
 						powerup.speed = (100F - meditation) * 0.05F;//meditation;
+					
+						if (meditation != 0.0F){
+						hexbot.audio.volume = (100F - meditation) * 0.01F;
+						}
 				}
 
 		}

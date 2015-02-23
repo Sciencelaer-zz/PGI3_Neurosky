@@ -26,7 +26,7 @@ public class IntroStory : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
 
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKeyDown (KeyCode.Return)) {
 			textCount ++;
 
 				}
