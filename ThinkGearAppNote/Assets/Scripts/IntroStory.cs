@@ -31,7 +31,7 @@ public class IntroStory : MonoBehaviour {
 
 				}
 
-		print (textCount);
+		//print (textCount);
 
 		if (textCount == 1) {
 
